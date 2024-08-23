@@ -1,0 +1,29 @@
+{
+	"name": "@webtools/slick",
+	"version": "0.1.0",
+	"exports": "./src/mod.ts",
+
+	"lock": false,
+	"imports": {
+		"@std/fs": "jsr:@std/fs@^1.0.1",
+		"@webtools/expressapi": "jsr:@webtools/expressapi@^0.3.0",
+
+		"esbuild": "https://deno.land/x/esbuild@v0.23.1/mod.js",
+
+		"preact/jsx-runtime": "https://esm.sh/preact@10.19.6/jsx-runtime",
+		"preact-render-to-string": "https://esm.sh/preact-render-to-string@6.5.9",
+
+		"@webtools/slick-client": "https://raw.githubusercontent.com/8borane8/webtools-slick/main/src/Client.ts"
+	},
+
+	"fmt": {
+		"useTabs": true,
+		"lineWidth": 120,
+		"indentWidth": 4
+	},
+
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"jsxImportSource": "preact"
+	}
+}
