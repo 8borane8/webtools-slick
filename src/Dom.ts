@@ -1,6 +1,7 @@
 export class Dom {
 	constructor(
 		private readonly lang: string,
+		private readonly template: string,
 		private readonly title: string,
 		private readonly favicon: string,
 		private readonly styles: Array<string>,
@@ -33,7 +34,13 @@ export class Dom {
                 }
             }
         </script>
-        <script src="" type="module"></script>
+        <script src="/@webtools/slick-client" type="module"></script>
+        <script type="module">
+            import { Slick } from "@webtools/slick-client";
+
+            Slick.initTemplate("${this.template}");
+        </script>
+
         ${this.scripts.join("\n        ")}
     </body>
 </html>`;

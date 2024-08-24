@@ -152,7 +152,17 @@ export class Slick {
 			(_match: string, p1: string, p2: string) => `${p1}${pageBody}${p2}`,
 		);
 
-		const dom = new Dom(this.lang, page.title, page.favicon, styles, scripts, templateHead, pageHead, body);
+		const dom = new Dom(
+			this.lang,
+			page.template,
+			page.title,
+			page.favicon,
+			styles,
+			scripts,
+			templateHead,
+			pageHead,
+			body,
+		);
 
 		res.setHeader("Content-Type", "text/html; charset=utf-8");
 		return res.send(dom.render());
@@ -163,8 +173,47 @@ export class Slick {
 		res: expressapi.HttpResponse,
 		page: Page,
 	): Promise<Response> {
+		const template = this.templateManager.getTemplate(page.template);
+		if (template == null) {
+			throw new Error();
+		}
+
+		const templateOnRequest = template.onrequest == null ? undefined : await template.onrequest(req);
+		if (templateOnRequest != undefined) {
+			return res.redirect(templateOnRequest);
+		}
+
+		const pageOnRequest = page.onrequest == null ? undefined : await page.onrequest(req);
+		if (pageOnRequest != undefined) {
+			return res.redirect(pageOnRequest);
+		}
+
 		return res.json({
-			payload: preact.render(typeof page.body == "function" ? await page.body(req, res) : page.body),
+			url: req.url,
+			title: page.title,
+			favicon: page.favicon,
+
+			template: req.body.template == page.template ? null : {
+				name: template.name,
+				styles: template.styles,
+				scripts: template.scripts,
+				head: preact.render(
+					typeof template.head == "function" ? await template.head(req, res) : template.head,
+				),
+				body: preact.render(
+					typeof template.body == "function" ? await template.body(req, res) : template.body,
+				),
+			},
+			page: {
+				styles: page.styles,
+				scripts: page.scripts,
+				head: preact.render(
+					typeof page.head == "function" ? await page.head(req, res) : page.head,
+				),
+				body: preact.render(
+					typeof page.body == "function" ? await page.body(req, res) : page.body,
+				),
+			},
 		});
 	}
 
