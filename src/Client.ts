@@ -1,4 +1,4 @@
-export abstract class Slick {
+export const Client = `export abstract class Slick {
 	private static title: HTMLTitleElement | null = document.querySelector("title");
 	private static favicon: HTMLLinkElement | null = document.querySelector("link[rel='icon shortcut']");
 	private static importmap: HTMLScriptElement | null = document.querySelector("script[type='importmap']");
@@ -65,7 +65,7 @@ export abstract class Slick {
 			scripts.map((src) => {
 				return new Promise<void>((resolve) => {
 					const script = document.createElement("script");
-					script.setAttribute("src", `${src}?cacheBust=${Date.now()}`);
+					script.setAttribute("src", \`\${src}?cacheBust=\${Date.now()}\`);
 					script.setAttribute("type", "module");
 					script.setAttribute("slick-type", type);
 
@@ -170,7 +170,7 @@ export abstract class SlickCookies {
 	public static get(cname: string): string {
 		const cookies = decodeURIComponent(document.cookie).split("; ");
 		for (const cookie of cookies) {
-			if (cookie.startsWith(`${cname}=`)) {
+			if (cookie.startsWith(\`\${cname}=\`)) {
 				return cookie.substring(cname.length + 1);
 			}
 		}
@@ -180,10 +180,10 @@ export abstract class SlickCookies {
 	public static set(cname: string, cvalue: string, exdays: number = 14) {
 		const date = new Date();
 		date.setTime(date.getTime() + exdays * 24 * 60 * 60 * 1000);
-		document.cookie = `${cname}=${cvalue}; expires=${date.toUTCString()}; path=/; secure; SameSite=None;`;
+		document.cookie = \`\${cname}=\${cvalue}; expires=\${date.toUTCString()}; path=/; secure; SameSite=None;\`;
 	}
 
 	public static delete(cname: string) {
-		document.cookie = `${cname}=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; secure; SameSite=None;`;
+		document.cookie = \`\${cname}=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; secure; SameSite=None;\`;
 	}
-}
+}`;

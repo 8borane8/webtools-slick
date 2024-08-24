@@ -7,6 +7,7 @@ import { TemplateManager } from "./managers/TemplateManager.ts";
 import { PageManager } from "./managers/PageManager.ts";
 import { FileManager } from "./managers/FileManager.ts";
 import type { Page } from "./interfaces/Page.ts";
+import { Client } from "./Client.ts";
 import { Dom } from "./Dom.ts";
 
 export class Slick {
@@ -20,7 +21,7 @@ export class Slick {
 	private readonly pageManager: PageManager;
 	private readonly fileManager: FileManager;
 
-	private client = Deno.readTextFileSync(`${Deno.cwd()}/src/Client.ts`);
+	private client = Client;
 
 	constructor(
 		private readonly workspace: string,
