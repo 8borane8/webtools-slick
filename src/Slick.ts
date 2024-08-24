@@ -26,7 +26,7 @@ export class Slick {
 		private readonly workspace: string,
 		port = 5000,
 		private readonly lang = "fr",
-		private readonly alias = new Map([
+		private readonly alias: Map<string, string> = new Map([
 			["/favicon.ico", "/assets/favicon.ico"],
 			["/robots.txt", "/assets/robots.txt"],
 		]),
