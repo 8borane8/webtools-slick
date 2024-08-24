@@ -8,10 +8,10 @@
 		"@std/fs": "jsr:@std/fs@^1.0.1",
 		"@webtools/expressapi": "jsr:@webtools/expressapi@^0.3.1",
 
-		"esbuild": "npm:esbuild",
+		"esbuild": "npm:esbuild@^0.23.1",
 
-		"preact": "npm:preact",
-		"preact-render-to-string": "npm:preact-render-to-string"
+		"preact": "npm:preact@^10.23.2",
+		"preact-render-to-string": "npm:preact-render-to-string@^6.5.9"
 	},
 
 	"fmt": {
