@@ -20,7 +20,7 @@ export class Slick {
 	private readonly pageManager: PageManager;
 	private readonly fileManager: FileManager;
 
-	private client = Deno.readTextFileSync(`${new URL(".", import.meta.url).pathname.slice(1)}/Client.ts`);
+	private client = Deno.readTextFileSync(`${Deno.cwd()}/src/Client.ts`);
 
 	constructor(
 		private readonly workspace: string,
