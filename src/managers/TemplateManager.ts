@@ -10,8 +10,8 @@ export class TemplateManager {
 	public async load() {
 		for (const walkEntry of fs.walkSync(`${this.workspace}/templates`, { includeDirs: false })) {
 			const dynamicImport = await import(`file:///${walkEntry.path}`);
-			const template: Template = dynamicImport.default;
 
+			const template: Template = dynamicImport.default;
 			this.templates.push(template);
 		}
 	}

@@ -10,8 +10,8 @@ export class PageManager {
 	public async load() {
 		for (const walkEntry of fs.walkSync(`${this.workspace}/pages`, { includeDirs: false })) {
 			const dynamicImport = await import(`file:///${walkEntry.path}`);
-			const page: Page = dynamicImport.default;
 
+			const page: Page = dynamicImport.default;
 			this.pages.push(page);
 		}
 	}
