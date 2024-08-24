@@ -29,7 +29,7 @@ une solution plus efficace et légère pour le développement d'applications web
 ## Technologies
 
 - **Language** : Deno (Typescript)
-- **Librairies** : @std/fs, @webtools/expressapi, esbuild, preact/jsx-runtime, preact-render-to-string
+- **Librairies** : @std/fs, @webtools/expressapi, esbuild, preact, preact-render-to-string
 
 ## Avantages
 
