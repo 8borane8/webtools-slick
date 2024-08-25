@@ -1,5 +1,5 @@
 export interface CachedFile {
-	content: string;
-	mimeType: string;
-	timestamp: number;
+	readonly content: string;
+	readonly mimeType: string;
+	readonly timestamp: number;
 }

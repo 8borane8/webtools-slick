@@ -4,8 +4,10 @@ import * as esbuild from "esbuild";
 import * as fs from "@std/fs";
 
 import { TemplateManager } from "./managers/TemplateManager.ts";
+import type { UserConfig } from "./interfaces/UserConfig.ts";
 import { PageManager } from "./managers/PageManager.ts";
 import { FileManager } from "./managers/FileManager.ts";
+import type { Config } from "./interfaces/Config.ts";
 import type { Page } from "./interfaces/Page.ts";
 import { Client } from "./Client.ts";
 import { Dom } from "./Dom.ts";
@@ -20,23 +22,28 @@ export class Slick {
 	private readonly templateManager: TemplateManager;
 	private readonly pageManager: PageManager;
 	private readonly fileManager: FileManager;
+	private readonly config: Config;
 
 	private client = Client;
 
 	constructor(
 		private readonly workspace: string,
-		port = 5000,
-		private readonly lang = "fr",
-		private readonly alias: Map<string, string> = new Map([
-			["/favicon.ico", "/assets/favicon.ico"],
-			["/robots.txt", "/assets/robots.txt"],
-		]),
-		private readonly redirect404 = "/",
+		private readonly userConfig: UserConfig,
 	) {
-		this.httpServer = new expressapi.HttpServer(port);
-		this.templateManager = new TemplateManager(workspace);
-		this.pageManager = new PageManager(workspace);
-		this.fileManager = new FileManager(workspace);
+		this.config = {
+			port: userConfig.port || 5000,
+			lang: userConfig.lang || "en",
+			alias: userConfig.alias || new Map([
+				["/favicon.ico", "/assets/favicon.ico"],
+				["/robots.txt", "/assets/robots.txt"],
+			]),
+			redirect404: userConfig.redirect404 || "/",
+		};
+
+		this.httpServer = new expressapi.HttpServer(this.config.port);
+		this.templateManager = new TemplateManager(this.workspace);
+		this.pageManager = new PageManager(this.workspace);
+		this.fileManager = new FileManager(this.workspace);
 	}
 
 	public async start() {
@@ -60,11 +67,11 @@ export class Slick {
 			throw new Error(`The specified workspace does not exist.`);
 		}
 
-		if (!Slick.urlRegex.test(this.redirect404)) {
+		if (!Slick.urlRegex.test(this.config.redirect404)) {
 			throw new Error(`Invalid redirect 404 url. Please provide a valid format: ${Slick.urlRegex}`);
 		}
 
-		if (!Object.entries(this.alias).every((pair) => pair.every(Slick.urlRegex.test))) {
+		if (!Object.entries(this.config.alias).every((pair) => pair.every(Slick.urlRegex.test))) {
 			throw new Error(`Invalid alias url. Please provide a valid format: ${Slick.urlRegex}`);
 		}
 
@@ -76,7 +83,7 @@ export class Slick {
 	}
 
 	private preventErrors() {
-		if (!this.pageManager.getPages().some((page) => page.url == this.redirect404)) {
+		if (!this.pageManager.getPages().some((page) => page.url == this.config.redirect404)) {
 			throw new Error(`The 404 page does not exist.`);
 		}
 
@@ -154,7 +161,7 @@ export class Slick {
 		);
 
 		const dom = new Dom(
-			this.lang,
+			this.config.lang,
 			page.template,
 			page.title,
 			page.favicon,
@@ -226,8 +233,8 @@ export class Slick {
 			});
 		}
 
-		if (this.alias.has(req.url)) {
-			return res.redirect(this.alias.get(req.url) || "");
+		if (this.config.alias.has(req.url)) {
+			return res.redirect(this.config.alias.get(req.url) || "");
 		}
 
 		if (Slick.staticDirectories.some((url) => req.url.startsWith(url))) {
@@ -248,6 +255,6 @@ export class Slick {
 			});
 		}
 
-		return res.redirect(this.redirect404);
+		return res.redirect(this.config.redirect404);
 	}
 }
