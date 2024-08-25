@@ -1,3 +1,4 @@
+import * as path from "@std/path";
 import * as fs from "@std/fs";
 
 import type { Template } from "../interfaces/Template.ts";
@@ -9,9 +10,9 @@ export class TemplateManager {
 
 	public async load() {
 		for (const walkEntry of fs.walkSync(`${this.workspace}/templates`, { includeDirs: false })) {
-			const dynamicImport = await import(`file:///${walkEntry.path}`);
-
+			const dynamicImport = await import(path.toFileUrl(walkEntry.path).toString());
 			const template: Template = dynamicImport.default;
+
 			this.templates.push(template);
 		}
 	}

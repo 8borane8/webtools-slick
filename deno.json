@@ -1,11 +1,12 @@
 {
 	"name": "@webtools/slick",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"exports": "./src/mod.ts",
 
 	"lock": false,
 	"imports": {
 		"@std/fs": "jsr:@std/fs@^1.0.1",
+		"@std/path": "jsr:@std/path@^1.0.2",
 		"@webtools/expressapi": "jsr:@webtools/expressapi@^0.3.1",
 
 		"esbuild": "npm:esbuild@^0.23.1",

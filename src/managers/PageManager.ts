@@ -1,3 +1,4 @@
+import * as path from "@std/path";
 import * as fs from "@std/fs";
 
 import type { Page } from "../interfaces/Page.ts";
@@ -9,9 +10,9 @@ export class PageManager {
 
 	public async load() {
 		for (const walkEntry of fs.walkSync(`${this.workspace}/pages`, { includeDirs: false })) {
-			const dynamicImport = await import(`file:///${walkEntry.path}`);
-
+			const dynamicImport = await import(path.toFileUrl(walkEntry.path).toString());
 			const page: Page = dynamicImport.default;
+
 			this.pages.push(page);
 		}
 	}
