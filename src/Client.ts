@@ -148,7 +148,7 @@ export const Client = `export abstract class Slick {
 		Array.from(document.querySelectorAll("script[slick-type='page']")).forEach((s) => s.remove());
 
 		await Slick.loadScripts(jsonResponse.page.scripts, "page");
-		Slick.addEventListeners("#app > a");
+		Slick.addEventListeners("#app a");
 
 		if (globalThis.location.hash == "") {
 			globalThis.scrollTo(0, 0);
