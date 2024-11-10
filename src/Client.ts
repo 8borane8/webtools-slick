@@ -65,7 +65,7 @@ export const Client = `export abstract class Slick {
 			scripts.map((src) => {
 				return new Promise<void>((resolve) => {
 					const script = document.createElement("script");
-					script.setAttribute("src", src);
+     					script.setAttribute("src", \`\${src}?cacheBust=\${Date.now()}\`);
 					script.setAttribute("type", "module");
 					script.setAttribute("slick-type", type);
 
