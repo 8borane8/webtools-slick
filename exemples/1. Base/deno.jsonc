@@ -1,0 +1,26 @@
+{
+	"lock": false,
+	"tasks": {
+		"build": "deno run --allow-all ./src/index.ts",
+		"dev": "deno run --watch --allow-all ./src/index.ts"
+	},
+
+	"imports": {
+		"@webtools/expressapi": "jsr:@webtools/expressapi@^0.3.1",
+		"@webtools/slick": "jsr:@webtools/slick@^0.2.1",
+
+		"@webtools/slick-client": "https://jsr.io/@webtools/slick/0.1.0/src/Client.ts",
+		"preact": "npm:preact@^10.23.2"
+	},
+
+	"fmt": {
+		"useTabs": true,
+		"lineWidth": 120,
+		"indentWidth": 4
+	},
+
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"jsxImportSource": "preact"
+	}
+}

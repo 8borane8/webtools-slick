@@ -8,7 +8,7 @@ export class PageManager {
 
 	constructor(private readonly workspace: string) {}
 
-	public async load() {
+	public async load(): Promise<void> {
 		for (const walkEntry of fs.walkSync(`${this.workspace}/pages`, { includeDirs: false })) {
 			const dynamicImport = await import(path.toFileUrl(walkEntry.path).toString());
 			const page: Page = dynamicImport.default;

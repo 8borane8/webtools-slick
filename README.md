@@ -43,6 +43,32 @@ une solution plus efficace et légère pour le développement d'applications web
 
 ## Installation
 
+Pour commencer à utiliser Slick, suivez ces étapes simples :
+
+1. Installer Deno
+
+Slick repose sur Deno, un runtime JavaScript/TypeScript moderne. Vous devez d'abord installer Deno sur votre machine.
+
+- Sous macOS ou Linux, ouvrez votre terminal et exécutez la commande suivante:
+
+  ```sh
+  curl -fsSL https://deno.land/install.sh | sh
+  ```
+- Sous Windows, vous pouvez installer Deno en utilisant irm:
+
+  ```sh
+  irm https://deno.land/install.ps1 | iex
+  ```
+
+Vérifiez que Deno est bien installé en exécutant la commande suivante:
+```sh
+deno --version
+```
+
+2. Initialiser un projet Slick
+
+Commencez par télécharger le dossier `./exemples/1. Base`. Ce dossier contient la configuration de base nécessaire pour démarrer le développement avec Slick. Vous pouvez éditer les fichiers dans le dossier `./src/` pour ajouter des pages ou personnaliser l'application comme vous le souhaitez.
+
 ## Documentation
 
 **Vous aimez Slick ? Ajoutez une star à notre répertoire ⭐👆.**
