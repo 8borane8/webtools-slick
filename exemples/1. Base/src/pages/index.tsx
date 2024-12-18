@@ -1,23 +1,23 @@
-import * as Slick from "@webtools/slick";
+import type * as Slick from "@webtools/slick";
 
 export default {
-    url: "/",
-    template: "app",
+	url: "/",
+	template: "app",
 
-    title: "Index",
-    favicon: "/favicon.ico",
+	title: "Index",
+	favicon: "/favicon.ico",
 
-    styles: [
-        "/styles/app/index.css",
-    ],
-    scripts: [],
+	styles: [
+		"/styles/app/index.css",
+	],
+	scripts: [],
 
-    head: <></>,
-    body: (
-        <>
-            <p>Index</p>
-        </>
-    ),
+	head: <></>,
+	body: (
+		<>
+			<p>Index</p>
+		</>
+	),
 
-    onrequest: null,
+	onrequest: null,
 } satisfies Slick.Page;

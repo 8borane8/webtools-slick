@@ -1,21 +1,21 @@
-import * as Slick from "@webtools/slick";
+import type * as Slick from "@webtools/slick";
 
 export default {
-    name: "app",
+	name: "app",
 
-    styles: [
-        "/styles/reset.css",
-        "/styles/app.css",
-    ],
-    scripts: [],
+	styles: [
+		"/styles/reset.css",
+		"/styles/app.css",
+	],
+	scripts: [],
 
-    head: <></>,
-    body: (req) => (
-        <>
-            <h1>{Date.now()} - {req.url}</h1>
-            <div id="app"></div>
-        </>
-    ),
+	head: <></>,
+	body: (req) => (
+		<>
+			<h1>{Date.now()} - {req.url}</h1>
+			<div id="app"></div>
+		</>
+	),
 
-    onrequest: null,
+	onrequest: null,
 } satisfies Slick.Template;

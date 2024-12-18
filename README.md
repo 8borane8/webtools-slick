@@ -61,13 +61,16 @@ Slick repose sur Deno, un runtime JavaScript/TypeScript moderne. Vous devez d'ab
   ```
 
 Vérifiez que Deno est bien installé en exécutant la commande suivante:
+
 ```sh
 deno --version
 ```
 
 2. Initialiser un projet Slick
 
-Commencez par télécharger le dossier `./exemples/1. Base`. Ce dossier contient la configuration de base nécessaire pour démarrer le développement avec Slick. Vous pouvez éditer les fichiers dans le dossier `./src/` pour ajouter des pages ou personnaliser l'application comme vous le souhaitez.
+Commencez par télécharger le dossier `./exemples/1. Base`. Ce dossier contient la configuration de base nécessaire pour
+démarrer le développement avec Slick. Vous pouvez éditer les fichiers dans le dossier `./src/` pour ajouter des pages ou
+personnaliser l'application comme vous le souhaitez.
 
 ## Documentation
 
