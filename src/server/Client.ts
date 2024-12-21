@@ -152,7 +152,7 @@ export abstract class SlickCookies {
 	public static set(cname: string, cvalue: string, exdays: number = 14) {
 		const date = new Date();
 		date.setTime(date.getTime() + exdays * 24 * 60 * 60 * 1000);
-		document.cookie = \`\${cname}=\${cvalue}; expires=\${date.toUTCString()}; path=/; secure; SameSite=Strict;\`;
+		document.cookie = \`\${cname}=\${cvalue}; expires=\${date.toUTCString()}; path=/; secure; SameSite=Lax;\`;
 	}
 
 	public static delete(cname: string) {
