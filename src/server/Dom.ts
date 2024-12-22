@@ -71,7 +71,7 @@ export class Dom {
         <script type="module">
             import { Slick } from "@webtools/slick-client";
 
-            Slick.initTemplate("${this.template.name}");
+            Slick.initialize("${this.template.name}");
         </script>
 
         ${scripts.join("\n        ")}
