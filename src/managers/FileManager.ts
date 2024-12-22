@@ -21,6 +21,7 @@ export class FileManager {
 				loader: ext,
 				format: "esm",
 				minify: true,
+				target: "es2017",
 			});
 
 			this.cachedFiles.set(walkEntry.path.slice(this.workspace.length).replaceAll("\\", "/"), {

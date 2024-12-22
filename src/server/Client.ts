@@ -1,16 +1,27 @@
 import * as esbuild from "esbuild";
 
-const client = `export abstract class Slick {
-	private static title: HTMLTitleElement = document.querySelector("title")!;
-	private static favicon: HTMLLinkElement = document.querySelector("link[rel='icon shortcut']")!;
-	private static importmap: HTMLScriptElement = document.querySelector("script[type='importmap']")!;
+abstract class Slick {
+	private static template: string;
+	private static initialized: boolean = false;
+
+	private static title: HTMLTitleElement;
+	private static favicon: HTMLLinkElement;
+	private static importmap: HTMLScriptElement;
 
 	// deno-lint-ignore ban-types
 	private static readonly onloadListeners: Array<Function> = [];
-	private static template: string | null = null;
 
-	static {
-		globalThis.addEventListener("popstate", async (event: PopStateEvent) => {
+	public static initialize(template: string): void {
+		if (Slick.initialized) return;
+
+		Slick.template = template;
+		Slick.initialized = true;
+
+		Slick.title = document.querySelector("title")!;
+		Slick.favicon = document.querySelector("link[rel='icon shortcut']")!;
+		Slick.importmap = document.querySelector("script[type='importmap']")!;
+
+		globalThis.addEventListener("popstate", async (event) => {
 			event.preventDefault();
 			await Slick.redirect(Slick.getPathFromUrl(new URL(globalThis.location.href)));
 		});
@@ -19,7 +30,7 @@ const client = `export abstract class Slick {
 	}
 
 	private static getPathFromUrl(url: URL): string {
-		return url.pathname + url.hash + url.search;
+		return url.pathname + url.search + url.hash;
 	}
 
 	private static addEventListeners(selector: string): void {
@@ -34,8 +45,6 @@ const client = `export abstract class Slick {
 				await Slick.redirect(Slick.getPathFromUrl(url));
 			});
 		}
-
-		Slick.onloadListeners.forEach((fnc) => fnc());
 	}
 
 	private static async loadStyles(styles: string[], type: string): Promise<void> {
@@ -59,7 +68,7 @@ const client = `export abstract class Slick {
 			scripts.map((src) => {
 				return new Promise<void>((resolve) => {
 					const script = document.createElement("script");
-					script.setAttribute("src", \`\${src}?cacheBust=\${Date.now()}\`);
+					script.setAttribute("src", `${src}?cacheBust=${Date.now()}`);
 					script.setAttribute("slick-type", type);
 					script.setAttribute("type", "module");
 
@@ -68,10 +77,6 @@ const client = `export abstract class Slick {
 				});
 			}),
 		);
-	}
-
-	public static initTemplate(name: string) {
-		if (this.template == null) this.template = name;
 	}
 
 	public static async redirect(url: string, reload: boolean = false): Promise<void> {
@@ -84,9 +89,7 @@ const client = `export abstract class Slick {
 		});
 
 		const jsonResponse = await response.json();
-
-		if (response.redirected) globalThis.history.pushState({}, "", response.url);
-		else globalThis.history.pushState({}, "", url);
+		globalThis.history.pushState({}, "", response.redirected ? response.url : url);
 
 		Slick.title.innerHTML = jsonResponse.title;
 		Slick.favicon.href = jsonResponse.favicon;
@@ -119,8 +122,7 @@ const client = `export abstract class Slick {
 		const oldPageStyles = document.querySelectorAll("link[rel='stylesheet'][slick-type='page']");
 		await Slick.loadStyles(jsonResponse.page.styles, "page");
 
-		const app = document.querySelector("#app");
-		if (app != null) app.innerHTML = jsonResponse.page.body;
+		document.querySelector("#app")!.innerHTML = jsonResponse.page.body;
 
 		oldPageStyles.forEach((s) => s.remove());
 		Array.from(document.querySelectorAll("script[slick-type='page']")).forEach((s) => s.remove());
@@ -129,7 +131,9 @@ const client = `export abstract class Slick {
 		Slick.addEventListeners("#app a");
 
 		if (globalThis.location.hash == "") globalThis.scrollTo(0, 0);
-		else document.getElementById(globalThis.location.hash.substring(1))?.scrollIntoView({ behavior: "smooth" });
+		else document.querySelector(globalThis.location.hash)?.scrollIntoView({ behavior: "smooth" });
+
+		Slick.onloadListeners.forEach((fnc) => fnc());
 	}
 
 	// deno-lint-ignore ban-types
@@ -138,30 +142,27 @@ const client = `export abstract class Slick {
 	}
 }
 
-export abstract class SlickCookies {
+abstract class SlickCookies {
 	public static get(cname: string): string {
-		const cookies = decodeURIComponent(document.cookie).split("; ");
-		for (const cookie of cookies) {
-			if (cookie.startsWith(\`\${cname}=\`)) {
-				return cookie.substring(cname.length + 1);
-			}
-		}
-		return "";
+		const cookies = document.cookie.split("; ").map((cookie) => cookie.split("="));
+		return cookies.find(([name]) => name == cname)?.[1] || "";
 	}
 
 	public static set(cname: string, cvalue: string, exdays: number = 14) {
 		const date = new Date();
 		date.setTime(date.getTime() + exdays * 24 * 60 * 60 * 1000);
-		document.cookie = \`\${cname}=\${cvalue}; expires=\${date.toUTCString()}; path=/; secure; SameSite=Lax;\`;
+		document.cookie = `${cname}=${cvalue}; expires=${date.toUTCString()}; path=/; secure; SameSite=Lax;`;
 	}
 
 	public static delete(cname: string) {
-		document.cookie = \`\${cname}=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;\`;
+		document.cookie = `${cname}=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;`;
 	}
-}`;
+}
 
-export const Client = esbuild.transformSync(client, {
+const rawCode = [Slick, SlickCookies].map((fnc) => `export ${fnc.toString()}`).join("");
+export const Client = esbuild.transformSync(rawCode, {
 	loader: "ts",
 	format: "esm",
 	minify: true,
+	target: "es2017",
 }).code;
