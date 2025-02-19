@@ -1,29 +1,28 @@
 {
 	"name": "@webtools/slick",
-	"version": "0.2.6",
+	"version": "0.3.0",
 	"exports": "./src/mod.ts",
 
 	"lock": false,
 	"imports": {
-		"@std/fs": "jsr:@std/fs@^1.0.1",
+		"@webtools/expressapi": "jsr:@webtools/expressapi@^0.4.1",
 		"@std/path": "jsr:@std/path@^1.0.2",
-		"@webtools/expressapi": "jsr:@webtools/expressapi@^0.3.1",
+		"@std/fs": "jsr:@std/fs@^1.0.13",
 
+		"preact-render-to-string": "npm:preact-render-to-string@^6.5.9",
 		"esbuild": "npm:esbuild@^0.23.1",
-
-		"preact": "npm:preact@^10.23.2",
-		"preact-render-to-string": "npm:preact-render-to-string@^6.5.9"
+		"preact": "npm:preact@^10.23.2"
 	},
 
 	"fmt": {
-		"useTabs": true,
 		"lineWidth": 120,
-		"indentWidth": 4
+		"indentWidth": 4,
+		"useTabs": true
 	},
 
 	"compilerOptions": {
-		"jsx": "react-jsx",
-		"jsxImportSource": "preact"
+		"jsxImportSource": "preact",
+		"jsx": "react-jsx"
 	},
 
 	"exclude": [
